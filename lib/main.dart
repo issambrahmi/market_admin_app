@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:market_admin_app/Core/app_color.dart';
-import 'package:market_admin_app/View/Add%20New%20User/add_newuseer_page.dart';
 import 'package:market_admin_app/View/Home%20Page/home_page.dart';
 
 void main() {
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const AddNewUserPage(),
+      child: const HomePage(),
     );
   }
 }

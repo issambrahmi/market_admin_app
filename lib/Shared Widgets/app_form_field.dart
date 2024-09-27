@@ -12,7 +12,8 @@ class AppFormField extends StatelessWidget {
       required this.validator,
       this.isPassword,
       this.eyeTap,
-      this.isObsecure});
+      this.isObsecure,
+      this.onChanged});
   final String hint;
   final TextInputType? keyboardType;
   final Widget prefixIcon;
@@ -21,6 +22,7 @@ class AppFormField extends StatelessWidget {
   final bool? isPassword;
   final bool? isObsecure;
   final void Function()? eyeTap;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class AppFormField extends StatelessWidget {
       child: TextFormField(
         controller: textController,
         validator: validator,
+        onChanged: onChanged,
         obscureText: isObsecure ?? false,
         keyboardType: keyboardType ?? keyboardType,
         decoration: InputDecoration(

@@ -60,18 +60,11 @@ class ProductCard extends StatelessWidget {
             ),
             const Spacer(),
             Container(
-              height: 25.sp,
-              width: 25.sp,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+              padding: EdgeInsets.all(5.sp),
+              child: Icon(
+                Icons.delete,
+                size: 20.sp,
                 color: AppColor.deleteColor,
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                  size: 18.sp,
-                ),
               ),
             )
           ],

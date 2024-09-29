@@ -9,6 +9,7 @@ class ProductsController extends GetxController {
   late TextEditingController prixDetailleController;
   late TextEditingController prixGrosController;
   late TextEditingController prixSuperGrosController;
+  late TextEditingController searchProduct;
 
   double prixDetaille = 0.00;
   double prixGros = 0.00;
@@ -22,6 +23,8 @@ class ProductsController extends GetxController {
     prixDetailleController = TextEditingController();
     prixGrosController = TextEditingController();
     prixSuperGrosController = TextEditingController();
+    searchProduct = TextEditingController();
+
     key = GlobalKey<FormState>();
     super.onInit();
   }

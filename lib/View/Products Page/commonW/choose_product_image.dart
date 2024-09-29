@@ -20,7 +20,7 @@ class ChooseProductImage extends StatelessWidget {
             return GestureDetector(
               onTap: () => controller.pickImage(),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
+                  borderRadius: BorderRadius.circular(15),
                   child: controller.productPic == null
                       ? Image.asset(
                           'assets/images/person.png',

@@ -11,7 +11,6 @@ class AddNewUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(UsersController());
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

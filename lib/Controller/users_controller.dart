@@ -9,6 +9,8 @@ class UsersController extends GetxController {
   late TextEditingController userPassword;
   late TextEditingController userPhoneNumber;
   late TextEditingController userName;
+  late TextEditingController searchUser;
+
   late GlobalKey<FormState> key;
   bool isPasswordShow = false;
   String userType = 'Client';
@@ -19,6 +21,7 @@ class UsersController extends GetxController {
     userPassword = TextEditingController();
     userPhoneNumber = TextEditingController();
     userName = TextEditingController();
+    searchUser = TextEditingController();
 
     key = GlobalKey<FormState>();
     super.onInit();

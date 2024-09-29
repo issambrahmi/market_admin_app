@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:market_admin_app/View/Categories%20Page/categories_page.dart';
+import 'package:market_admin_app/View/Oders%20Page/orders_page.dart';
 import 'package:market_admin_app/View/Products%20Page/products_page.dart';
 import '../View/Users Page/users_page.dart';
 
@@ -22,6 +23,10 @@ class HomeController extends GetxController {
         break;
       case 2:
         Get.to(() => const CategoriesPage());
+        break;
+      case 3:
+        Get.to(() => const OrdersPage());
+        break;
     }
   }
 }

@@ -14,9 +14,19 @@ class UserCard extends StatelessWidget {
       onTap: () => Get.to(() => const AddNewUserPage()),
       child: Container(
         padding: EdgeInsets.all(10.sp),
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(0, 3),
+                color: AppColor.mainScreencolor,
+                blurRadius: 2,
+              )
+            ]),
         child: Row(
           children: [
             SizedBox(

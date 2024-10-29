@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/commandes_controller.dart';
-import 'package:market_admin_app/Shared%20Widgets/app_top_section.dart';
-import 'package:market_admin_app/Shared%20Widgets/field_validator.dart';
-import 'package:market_admin_app/Shared%20Widgets/search_card.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/field_validator.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/search_card.dart';
 import 'package:market_admin_app/View/Oders%20Page/commonW/orders_list.dart';
 
 class OrdersPage extends StatelessWidget {

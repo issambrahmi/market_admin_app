@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/products_controller.dart';
-import 'package:market_admin_app/Core/app_color.dart';
-import 'package:market_admin_app/Shared%20Widgets/app_top_section.dart';
-import 'package:market_admin_app/Shared%20Widgets/field_validator.dart';
-import 'package:market_admin_app/Shared%20Widgets/floating_action_button.dart';
-import 'package:market_admin_app/Shared%20Widgets/search_card.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/field_validator.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/floating_action_button.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/search_card.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/add_new_product_page.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/products_list.dart';
 

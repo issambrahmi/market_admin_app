@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:market_admin_app/Core/app_color.dart';
+import 'package:get/get.dart';
+import 'package:market_admin_app/Controller/users_controller.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Model/Enums/user_type_enum.dart';
 import 'package:market_admin_app/View/Users%20Page/add_newuseer_page.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key});
+  const UserCard({super.key, required this.index});
 
+  final int index;
   @override
   Widget build(BuildContext context) {
+    UsersController controller = Get.find<UsersController>();
     return GestureDetector(
       onTap: () => Get.to(() => const AddNewUserPage()),
       child: Container(
         padding: EdgeInsets.all(10.sp),
-        // decoration: BoxDecoration(
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -47,7 +47,7 @@ class UserCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Brahmi issam eddine',
+                    controller.users[index].username,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -56,7 +56,9 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Client',
+                    controller.userType == UserTYpeEnum.client
+                        ? 'Client'
+                        : 'Worker',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

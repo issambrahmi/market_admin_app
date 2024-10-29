@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:market_admin_app/Shared%20Widgets/app_top_section.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/choose_product_image.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/product_form.dart';
 

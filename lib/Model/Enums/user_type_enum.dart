@@ -1,0 +1,4 @@
+enum UserTYpeEnum  {
+  client,
+  worker,
+}

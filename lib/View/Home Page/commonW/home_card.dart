@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:market_admin_app/Controller/home_controller.dart';
-import 'package:market_admin_app/Core/app_color.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key, required this.index});

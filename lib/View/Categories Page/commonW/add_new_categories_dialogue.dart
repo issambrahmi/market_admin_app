@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:market_admin_app/Core/app_color.dart';
-import 'package:market_admin_app/Shared%20Widgets/app_button.dart';
-import 'package:market_admin_app/Shared%20Widgets/app_form_field.dart';
-import 'package:market_admin_app/Shared%20Widgets/field_validator.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_button.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_form_field.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/field_validator.dart';
 
 void addNewCategorie(
   TextEditingController controller,

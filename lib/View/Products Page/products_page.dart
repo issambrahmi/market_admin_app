@@ -9,6 +9,7 @@ import 'package:market_admin_app/Core/Shared%20Widgets/floating_action_button.da
 import 'package:market_admin_app/Core/Shared%20Widgets/search_card.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/add_new_product_page.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/products_list.dart';
+import 'package:market_admin_app/View/Users%20Page/add_newuseer_page.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
@@ -19,7 +20,9 @@ class ProductsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: AppFloatingActionButton(
-        nextPage: () => const AddNewProductPage(),
+        onTap: () {
+          Get.to(() => const AddNewUserPage());
+        },
         text: 'Add new product',
       ),
       body: SafeArea(

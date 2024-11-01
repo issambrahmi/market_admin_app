@@ -23,14 +23,17 @@ class UsersList extends StatelessWidget {
                       child: Text('Server err'),
                     )
                   : controller.reqState.value == RequestEnum.successes
-                      ? ListView.separated(
-                          itemCount: controller.users.length,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 10.h),
-                          itemBuilder: (BuildContext context, int index) {
-                            return UserCard(index: index);
-                          },
-                        )
+                      ? GetBuilder<UsersController>(builder: (controller) {
+                          return ListView.separated(
+                            itemCount: controller.users.length + 1,
+                            controller: controller.scrollController,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 10.h),
+                            itemBuilder: (BuildContext context, int index) {
+                              return UserCard(index: index);
+                            },
+                          );
+                        })
                       : const SizedBox())),
     );
   }

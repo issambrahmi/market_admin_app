@@ -2,7 +2,7 @@ class UserModel {
   final int? id;
   final String username;
   final String email;
-  final String? password;
+  final String password;
   final String? imageUrl;
   final String? phoneNumber;
 
@@ -10,7 +10,7 @@ class UserModel {
     this.id,
     required this.username,
     required this.email,
-    this.password,
+    required this.password,
     this.imageUrl,
     this.phoneNumber,
   });

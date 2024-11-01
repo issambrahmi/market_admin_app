@@ -1,6 +1,6 @@
 String? appValidator({
   required String value,
-  bool isRequired = true,
+  bool isRequired = false,
   bool isEmail = false,
   bool isPassword = false,
   int minLength = 0,

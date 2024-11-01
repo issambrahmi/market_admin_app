@@ -5,13 +5,13 @@ import 'package:market_admin_app/Core/Constants/app_color.dart';
 
 class AppFloatingActionButton extends StatelessWidget {
   const AppFloatingActionButton(
-      {super.key, required this.nextPage, required this.text});
-  final Function nextPage;
+      {super.key, required this.onTap, required this.text});
+  final Function() onTap;
   final String text;
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      onPressed: () => Get.to(nextPage),
+      onPressed: onTap,
       label: Text(
         text,
         style: TextStyle(

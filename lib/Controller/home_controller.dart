@@ -18,15 +18,10 @@ class HomeController extends GetxController {
   void onTap(int index) {
     switch (index) {
       case 0:
-        Get.to(
-            () => const UsersPage(
-                  userT: UserTYpeEnum.client,
-                ),
-            arguments: UserTYpeEnum.client);
+        Get.to(() => const UsersPage(), arguments: 'client');
         break;
       case 1:
-        Get.to(() => const UsersPage(userT: UserTYpeEnum.worker),
-            arguments: UserTYpeEnum.worker);
+        Get.to(() => const UsersPage(), arguments: 'worker');
         break;
       case 2:
         Get.to(() => const ProductsPage());

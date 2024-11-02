@@ -25,7 +25,9 @@ class UsersList extends StatelessWidget {
                   : controller.reqState.value == RequestEnum.successes
                       ? GetBuilder<UsersController>(builder: (controller) {
                           return ListView.separated(
-                            itemCount: controller.users.length + 1,
+                            itemCount: controller.showSearchedUsers
+                                ? controller.searchedUsers.length
+                                : controller.users.length + 1,
                             controller: controller.scrollController,
                             separatorBuilder: (context, index) =>
                                 SizedBox(height: 10.h),

@@ -9,6 +9,9 @@ import 'package:market_admin_app/Model/Models/user_model.dart';
 
 class UsersController extends GetxController {
   List<UserModel> users = [];
+  List<UserModel> searchedUsers = [];
+  List<String> usersNames = [];
+
   final ImagePicker _imagePicker = ImagePicker();
   XFile? userPic;
   late TextEditingController userEmail;
@@ -20,10 +23,15 @@ class UsersController extends GetxController {
   bool isPasswordShow = false;
   bool isLoading = false;
   bool isMaxUers = false;
+  RxBool isSearchNmaesShow = false.obs;
+  bool isAddPage = true; // for switch between edit and add pages
+  bool showSearchedUsers =
+      false; // for switch between searched users and default users
   late String userType; // client or worker
   Rx<RequestEnum> reqState = RequestEnum.start.obs; // for the user page
   Rx<RequestEnum> deleteReqState = RequestEnum.start.obs; // for the delete user
   Rx<RequestEnum> addReqState = RequestEnum.start.obs; // for the add user
+  Rx<RequestEnum> searchReqState = RequestEnum.start.obs; // for search
   Rx<String> errorMessage = ''.obs;
   final ScrollController scrollController = ScrollController();
 
@@ -37,6 +45,14 @@ class UsersController extends GetxController {
     userName = TextEditingController();
     searchUser = TextEditingController();
     key = GlobalKey<FormState>();
+    //////////////////////
+    searchUser.addListener(() {
+      if (searchUser.text.trim().isNotEmpty) {        
+        usersNames.clear();
+        searchUsersNames();
+      }
+    });
+    //////////////////////////
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.9 &&
@@ -44,6 +60,7 @@ class UsersController extends GetxController {
           !isMaxUers) {
         loadMoreUsers();
       }
+      ////////////////////////
     });
     super.onInit();
   }
@@ -115,7 +132,6 @@ class UsersController extends GetxController {
       ));
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body)['users'];
-        print(data.length);
         if (data.length < 16) {
           isMaxUers = true;
         }
@@ -128,6 +144,58 @@ class UsersController extends GetxController {
     } catch (e) {
       debugPrint('** $e');
       isLoading = false;
+    }
+  }
+
+  void searchUsersNames() async {
+    searchReqState.value = RequestEnum.waiting;
+    try {
+      final response = await http.get(Uri.parse(
+        userType == 'client'
+            ? "${AppLinks.searchClient}/${searchUser.text.trim()}"
+            : "${AppLinks.searchWorker}/${searchUser.text.trim()}",
+      ));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['users'];
+        data.forEach((user) {
+          usersNames.add(user['username']);
+        });
+        searchReqState.value = RequestEnum.successes;
+      } else if (response.statusCode == 400) {
+        errorMessage.value = jsonDecode(response.body)['message'];
+        searchReqState.value = RequestEnum.dataError;
+      } else {
+        searchReqState.value = RequestEnum.serverError;
+      }
+    } catch (e) {
+      debugPrint('** $e');
+      searchReqState.value = RequestEnum.serverError;
+    }
+  }
+
+  void searchForUsers() async {
+    reqState.value = RequestEnum.waiting;
+    try {
+      final response = await http.get(Uri.parse(
+        userType == 'client'
+            ? "${AppLinks.searchClient}/${searchUser.text.trim()}"
+            : "${AppLinks.searchWorker}/${searchUser.text.trim()}",
+      ));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['users'];
+        data.forEach((user) {
+          searchedUsers.add(UserModel.fromMap(user));
+        });
+        reqState.value = RequestEnum.successes;
+      } else if (response.statusCode == 400) {
+        errorMessage.value = jsonDecode(response.body)['message'];
+        reqState.value = RequestEnum.dataError;
+      } else {
+        reqState.value = RequestEnum.serverError;
+      }
+    } catch (e) {
+      debugPrint('** $e');
+      reqState.value = RequestEnum.serverError;
     }
   }
 

@@ -21,7 +21,10 @@ class AddNewUserPage extends StatelessWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  AppTopSection(text: 'Add New ${controller.userType}'),
+                  AppTopSection(
+                      text: controller.isAddPage
+                          ? 'Add New ${controller.userType}'
+                          : 'Edit ${controller.userType}'),
                   SizedBox(height: 15.h),
                   const ChooseUserImage(),
                   SizedBox(height: 30.h),

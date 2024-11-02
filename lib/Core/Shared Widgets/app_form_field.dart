@@ -13,7 +13,8 @@ class AppFormField extends StatelessWidget {
       this.isPassword,
       this.eyeTap,
       this.isObsecure,
-      this.onChanged});
+      this.onChanged,
+      this.enableBorder});
   final String hint;
   final TextInputType? keyboardType;
   final Widget prefixIcon;
@@ -23,6 +24,7 @@ class AppFormField extends StatelessWidget {
   final bool? isObsecure;
   final void Function()? eyeTap;
   final void Function(String)? onChanged;
+  final bool? enableBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +32,13 @@ class AppFormField extends StatelessWidget {
       height: 50.h,
       width: double.infinity,
       child: TextFormField(
+        cursorColor: AppColor.greencolor,
         controller: textController,
         validator: validator,
         onChanged: onChanged,
         obscureText: isObsecure ?? false,
         keyboardType: keyboardType ?? keyboardType,
         decoration: InputDecoration(
-          // hintText: hint,
-          // hintStyle: TextStyle(color: MyColors.greyColor.shade500),
           prefixIcon: prefixIcon,
           suffixIcon: isPassword == true
               ? GestureDetector(
@@ -48,7 +49,6 @@ class AppFormField extends StatelessWidget {
                   ),
                 )
               : null,
-
           // contentPadding:
           //     EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
           //   fillColor: MyColors.mainColor,
@@ -61,7 +61,10 @@ class AppFormField extends StatelessWidget {
                   width: 1.5, color: AppColor.mainScreencolor)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.black, width: 1.5)),
+              borderSide: enableBorder == false
+                  ? const BorderSide(
+                      color: AppColor.mainScreencolor, width: 1.5)
+                  : const BorderSide(color: Colors.black, width: 1.5)),
         ),
       ),
     );

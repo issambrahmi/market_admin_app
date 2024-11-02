@@ -29,10 +29,10 @@ class OrdersPage extends StatelessWidget {
                 SizedBox(height:  15.h),
               ],
             ),
-            SearchCard(
-              controller: controller.searchCommande,
-              validator: (value) => appValidator(value: value.toString()),
-            )
+            // SearchCard(
+            //   controller: controller.searchCommande,
+            //   validator: (value) => appValidator(value: value.toString()),
+            // )
           ],
         ),
       ),

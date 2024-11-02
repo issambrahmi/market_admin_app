@@ -60,34 +60,41 @@ class AddNewUserForm extends StatelessWidget {
                         isRequired: true,
                         isEmail: true,
                         minLength: 13,
+                        maxLength: 100,
                       )),
-              SizedBox(height: 15.h),
-              GetBuilder<UsersController>(builder: (controller) {
-                return AppFormField(
-                  hint: 'password',
-                  keyboardType: TextInputType.text,
-                  prefixIcon: Icon(
-                    Icons.lock_rounded,
-                    color: AppColor.greencolor,
-                  ),
-                  isPassword: true,
-                  isObsecure: !controller.isPasswordShow,
-                  eyeTap: () {
-                    controller.isPasswordShow = !controller.isPasswordShow;
-                    controller.update();
-                  },
-                  textController: controller.userPassword,
-                  validator: (txt) => appValidator(
-                    isRequired: true,
-                    value: txt.toString(),
-                    isPassword: true,
-                    minLength: 8,
-                  ),
-                );
-              }),
+              controller.isAddPage ? SizedBox(height: 15.h) : const SizedBox(),
+              controller.isAddPage
+                  ? GetBuilder<UsersController>(builder: (controller) {
+                      return AppFormField(
+                        hint: 'password',
+                        keyboardType: TextInputType.text,
+                        prefixIcon: Icon(
+                          Icons.lock_rounded,
+                          color: AppColor.greencolor,
+                        ),
+                        isPassword: true,
+                        isObsecure: !controller.isPasswordShow,
+                        eyeTap: () {
+                          controller.isPasswordShow =
+                              !controller.isPasswordShow;
+                          controller.update();
+                        },
+                        textController: controller.userPassword,
+                        validator: (txt) => appValidator(
+                          isRequired: true,
+                          value: txt.toString(),
+                          isPassword: true,
+                          minLength: 8,
+                          maxLength: 50,
+                        ),
+                      );
+                    })
+                  : const SizedBox(),
               SizedBox(height: 30.h),
               AppButton(
-                text: 'Add ${controller.userType}',
+                text: controller.isAddPage
+                    ? 'Add ${controller.userType}'
+                    : 'Edit ${controller.userType}',
                 height: 50.h,
                 width: double.infinity,
                 textSize: 18.sp,

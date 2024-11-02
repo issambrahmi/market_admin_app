@@ -38,10 +38,10 @@ class ProductsPage extends StatelessWidget {
                 const ProductsList(),
               ],
             ),
-            SearchCard(
-              controller: controller.searchProduct,
-              validator: (value) => appValidator(value: value.toString()),
-            )
+            // SearchCard(
+            //   controller: controller.searchProduct,
+            //   validator: (value) => appValidator(value: value.toString()),
+            // )
           ],
         ),
       ),

@@ -21,6 +21,7 @@ class UsersPage extends StatelessWidget {
       floatingActionButton: AppFloatingActionButton(
         onTap: () {
           controller.clearFields();
+          controller.isAddPage = true;
           Get.to(() => const AddNewUserPage());
         },
         text: 'Add new ${controller.userType}',
@@ -43,6 +44,15 @@ class UsersPage extends StatelessWidget {
               validator: (value) => appValidator(
                 value: value.toString(),
               ),
+              isNmaesShow: controller.isSearchNmaesShow,
+              names: controller.usersNames,
+              reqState: controller.searchReqState,
+              onTap: () {
+                controller.isSearchNmaesShow.value = false;
+                controller.showSearchedUsers = true;
+                controller.searchedUsers.clear();
+                controller.searchForUsers();
+              },
             ),
             controller.deleteReqState.value == RequestEnum.waiting
                 ? Center(

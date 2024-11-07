@@ -19,18 +19,18 @@ class AppLinks {
   static const String getClients = '$adminLink/users/client';
 
   ////////////////////// Categories ////////////////////////////////////
-  static const String addCategorie = '$adminLink/categorie';
-  static const String editCategorie = '$adminLink/categorie';
-  static const String deleteCategorie = '$adminLink/categorie';
-  static const String searchCategorie = '$adminLink/categorie/search';
-  static const String getCategorie = '$adminLink/categorie';
+  static const String addCategories = '$adminLink/categories';
+  static const String editCategories = '$adminLink/categories';
+  static const String deleteCategories = '$adminLink/categories';
+  static const String searchCategories = '$adminLink/categories/search';
+  static const String getCategories = '$adminLink/categories';
 
   ///////////////////// Products ////////////////////////////////////////
-  static const String addProduct = '$adminLink/categorie';
-  static const String editProduct = '$adminLink/product';
-  static const String deleteProduct = '$adminLink/product';
-  static const String searchProduct = '$adminLink/product/search';
-  static const String getProduct = '$adminLink/product';
+  static const String addProduct = '$adminLink/products';
+  static const String editProduct = '$adminLink/products';
+  static const String deleteProduct = '$adminLink/products';
+  static const String searchProduct = '$adminLink/products/search';
+  static const String getProduct = '$adminLink/products';
 
   //////////////////////// Orders ////////////////////////////////////////
   static const String editOrderStatus = '$adminLink/order/status';

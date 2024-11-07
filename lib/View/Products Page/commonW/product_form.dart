@@ -18,104 +18,123 @@ class ProductForm extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30.w),
       child: Form(
+          key: controller.key,
           child: Column(
-        children: [
-          AppDropDownButton(
-            height: 50.h,
-            dropDowns: const ['Boisson', 'Fromage', 'Alimentation'],
-            value: controller.userType,
-            onChange: (value) {
-              if (controller.userType != value) {
-                controller.userType = value.toString();
-                controller.update();
-              }
-            },
-          ),
-          SizedBox(height: 15.h),
-          AppFormField(
-              hint: 'product name',
-              prefixIcon: Icon(
-                Icons.production_quantity_limits,
-                color: AppColor.greencolor,
+            children: [
+              AppDropDownButton(
+                height: 50.h,
+                dropDowns: controller.categories.map((c) => c.name).toList(),
+                value: controller.categorieValue,
+                onChange: (value) {
+                  if (controller.categorieValue != value) {
+                    controller.categorieValue = value.toString();
+                    controller.update();
+                  }
+                },
               ),
-              textController: controller.productName,
-              validator: (txt) => appValidator(
-                    value: txt.toString(),
-                    isRequired: true,
-                    isEmail: true,
-                    minLength: 13,
-                  )),
-          SizedBox(height: 15.h),
-          AppFormField(
-            hint: 'prix en detaille',
-            prefixIcon: Icon(
-              Icons.price_change,
-              color: AppColor.greencolor,
-            ),
-            textController: controller.prixDetailleController,
-            validator: (txt) => appValidator(
-              value: txt.toString(),
-              isRequired: true,
-              isEmail: true,
-              minLength: 13,
-            ),
-            onChanged: (value) {
-              if (value != '') {
-                controller.prixDetaille = double.parse(value);
-              }
-            },
-          ),
-          SizedBox(height: 15.h),
-          AppFormField(
-            hint: 'prix en Gros',
-            prefixIcon: Icon(
-              Icons.price_change,
-              color: AppColor.greencolor,
-            ),
-            textController: controller.prixGrosController,
-            validator: (txt) => appValidator(
-              value: txt.toString(),
-              isRequired: true,
-              isEmail: true,
-              minLength: 13,
-            ),
-            onChanged: (value) {
-              if (value != '') {
-                controller.prixGros = double.parse(value);
-              }
-            },
-          ),
-          SizedBox(height: 15.h),
-          AppFormField(
-            hint: 'prix en SuperGros',
-            prefixIcon: Icon(
-              Icons.price_change,
-              color: AppColor.greencolor,
-            ),
-            textController: controller.prixSuperGrosController,
-            validator: (txt) => appValidator(
-              value: txt.toString(),
-              isRequired: true,
-              isEmail: true,
-              minLength: 13,
-            ),
-            onChanged: (value) {
-              if (value != '') {
-                controller.prixSuperGros = double.parse(value);
-              }
-            },
-          ),
-          SizedBox(height: 30.h),
-          AppButton(
-            text: 'Add product',
-            height: 50.h,
-            width: double.infinity,
-            textSize: 18.sp,
-            color: AppColor.greencolor,
-            textColor: Colors.white,
-          ),
-        ],
-      )),
+              SizedBox(height: 15.h),
+              AppFormField(
+                  hint: 'product name',
+                  prefixIcon: Icon(
+                    Icons.description,
+                    color: AppColor.greencolor,
+                  ),
+                  textController: controller.productName,
+                  validator: (txt) => appValidator(
+                        value: txt.toString(),
+                        isRequired: true,
+                        minLength: 1,
+                      )),
+              SizedBox(height: 15.h),
+              AppFormField(
+                hint: 'prix en detaille',
+                prefixIcon: Icon(
+                  Icons.price_change,
+                  color: AppColor.greencolor,
+                ),
+                textController: controller.priceDetailleController,
+                keyboardType: TextInputType.number,
+                validator: (txt) => appValidator(
+                  value: txt.toString(),
+                  isRequired: true,
+                  minLength: 1,
+                ),
+              ),
+              SizedBox(height: 15.h),
+              AppFormField(
+                hint: 'prix en Gros',
+                prefixIcon: Icon(
+                  Icons.price_change,
+                  color: AppColor.greencolor,
+                ),
+                textController: controller.priceGrosController,
+                keyboardType: TextInputType.number,
+                validator: (txt) => appValidator(
+                  value: txt.toString(),
+                  isRequired: true,
+                  minLength: 1,
+                ),
+              ),
+              SizedBox(height: 15.h),
+              AppFormField(
+                hint: 'prix en SuperGros',
+                prefixIcon: Icon(
+                  Icons.price_change,
+                  color: AppColor.greencolor,
+                ),
+                textController: controller.priceSuperGrosController,
+                keyboardType: TextInputType.number,
+                validator: (txt) => appValidator(
+                  value: txt.toString(),
+                  isRequired: true,
+                  minLength: 1,
+                ),
+              ),
+              SizedBox(height: 15.h),
+              AppFormField(
+                hint: 'min quantite gros',
+                prefixIcon: Icon(
+                  Icons.production_quantity_limits_sharp,
+                  color: AppColor.greencolor,
+                ),
+                textController: controller.minQntGros,
+                keyboardType: TextInputType.number,
+                validator: (txt) => appValidator(
+                  value: txt.toString(),
+                  isRequired: true,
+                  minLength: 1,
+                ),
+              ),
+              SizedBox(height: 15.h),
+              AppFormField(
+                hint: 'min quantite superGros',
+                prefixIcon: Icon(
+                  Icons.production_quantity_limits_sharp,
+                  color: AppColor.greencolor,
+                ),
+                textController: controller.minQntSuperGros,
+                keyboardType: TextInputType.number,
+                validator: (txt) => appValidator(
+                  value: txt.toString(),
+                  isRequired: true,
+                  minLength: 1,
+                ),
+              ),
+              SizedBox(height: 30.h),
+              AppButton(
+                text: controller.isAddPage ? 'Add product' : 'Edit product',
+                height: 50.h,
+                width: double.infinity,
+                textSize: 18.sp,
+                color: AppColor.greencolor,
+                textColor: Colors.white,
+                onTap: () {
+                  controller.isAddPage ? controller.addProduct() : null;
+                },
+              ),
+              SizedBox(height: 30.h),
+            ],
+          )),
     );
   }
 }

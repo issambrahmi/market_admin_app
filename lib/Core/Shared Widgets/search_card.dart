@@ -41,9 +41,18 @@ class SearchCard extends StatelessWidget {
           Obx(() {
             return isNmaesShow.value == true
                 ? reqState.value == RequestEnum.waiting
-                    ? Center(
-                        child: CircularProgressIndicator(
-                            color: AppColor.greencolor),
+                    ? Container(
+                        padding: EdgeInsets.all(30.sp),
+                        margin: EdgeInsets.only(top: 10.h),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border:
+                                Border.all(color: AppColor.mainScreencolor)),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                              color: AppColor.greencolor),
+                        ),
                       )
                     : reqState.value == RequestEnum.successes
                         ? names.isEmpty
@@ -56,12 +65,12 @@ class SearchCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
                                         color: AppColor.mainScreencolor)),
-                                child:
-                                    const Center(child: Text('No users found')))
+                                child: const Center(
+                                    child: Text('No result found')))
                             : Container(
                                 height: names.length > 5
                                     ? 180.h
-                                    : (names.length - 1) * 38.h,
+                                    : (names.length) * 38.h,
                                 padding: EdgeInsets.all(10.sp),
                                 margin: EdgeInsets.only(top: 10.h),
                                 decoration: BoxDecoration(

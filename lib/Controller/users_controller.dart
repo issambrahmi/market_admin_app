@@ -11,7 +11,6 @@ class UsersController extends GetxController {
   List<UserModel> users = [];
   List<UserModel> searchedUsers = [];
   List<String> usersNames = [];
-
   final ImagePicker _imagePicker = ImagePicker();
   XFile? userPic;
   late TextEditingController userEmail;
@@ -21,7 +20,6 @@ class UsersController extends GetxController {
   late TextEditingController searchUser;
   late GlobalKey<FormState> key;
   bool isPasswordShow = false;
-  bool isLoading = false;
   bool isMaxUers = false;
   RxBool isSearchNmaesShow = false.obs;
   bool isAddPage = true; // for switch between edit and add pages
@@ -47,7 +45,7 @@ class UsersController extends GetxController {
     key = GlobalKey<FormState>();
     //////////////////////
     searchUser.addListener(() {
-      if (searchUser.text.trim().isNotEmpty) {        
+      if (searchUser.text.trim().isNotEmpty) {
         usersNames.clear();
         searchUsersNames();
       }
@@ -55,9 +53,7 @@ class UsersController extends GetxController {
     //////////////////////////
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-              scrollController.position.maxScrollExtent * 0.9 &&
-          !isLoading &&
-          !isMaxUers) {
+          scrollController.position.maxScrollExtent) {
         loadMoreUsers();
       }
       ////////////////////////
@@ -109,6 +105,9 @@ class UsersController extends GetxController {
         data.forEach((user) {
           users.add(UserModel.fromMap(user));
         });
+        if (users.length < 16) {
+          isMaxUers = true;
+        }
         reqState.value = RequestEnum.successes;
       } else if (response.statusCode == 400) {
         errorMessage.value = jsonDecode(response.body)['message'];
@@ -123,7 +122,6 @@ class UsersController extends GetxController {
   }
 
   void loadMoreUsers() async {
-    isLoading = true;
     try {
       final response = await http.get(Uri.parse(
         userType == 'client'
@@ -140,10 +138,8 @@ class UsersController extends GetxController {
         }
         update();
       }
-      isLoading = false;
     } catch (e) {
       debugPrint('** $e');
-      isLoading = false;
     }
   }
 
@@ -277,9 +273,9 @@ class UsersController extends GetxController {
           body: jsonEncode({
             'id': users[index].id,
             'username': users[index].username,
+            'phoneNumber': users[index].phoneNumber,
             'email': users[index].email,
             'password': users[index].id,
-            'id': users[index].id,
           }));
       if (response.statusCode == 200) {
         users.removeAt(index);

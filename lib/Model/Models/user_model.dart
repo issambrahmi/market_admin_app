@@ -1,3 +1,5 @@
+import 'package:market_admin_app/Model/Models/product_model.dart';
+
 class UserModel {
   final int? id;
   final String username;
@@ -25,7 +27,7 @@ class UserModel {
         phoneNumber: data['phoneNumber']);
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String , dynamic>toJson() {
     return {
       'id': id,
       'username': username,

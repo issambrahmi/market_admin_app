@@ -5,9 +5,16 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
 
 class AppTopSection extends StatelessWidget {
-  const AppTopSection({super.key, required this.text, this.isHome});
+  const AppTopSection(
+      {super.key,
+      required this.text,
+      this.isHome,
+      this.isUserPage,
+      this.onBackTap});
   final String text;
   final bool? isHome;
+  final bool? isUserPage;
+  final void Function()? onBackTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,9 +41,11 @@ class AppTopSection extends StatelessWidget {
               child: Stack(
                 children: [
                   IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
+                      onPressed: isUserPage == null
+                          ? () {
+                              Get.back();
+                            }
+                          : onBackTap,
                       style: IconButton.styleFrom(
                         backgroundColor: AppColor.mainScreencolor,
                       ),

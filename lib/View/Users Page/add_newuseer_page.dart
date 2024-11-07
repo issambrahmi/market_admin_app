@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/users_controller.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
 import 'package:market_admin_app/Model/Enums/request_enum.dart';
 import 'package:market_admin_app/View/Users%20Page/commonW/add_user_form.dart';
@@ -37,8 +38,11 @@ class AddNewUserPage extends StatelessWidget {
                     height: double.infinity,
                     width: double.infinity,
                     color: Colors.black.withOpacity(0.4),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColor.greyColor,
+                        value: 30.sp,
+                      ),
                     ),
                   )
                 : const SizedBox())

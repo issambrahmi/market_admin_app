@@ -24,17 +24,29 @@ class UsersList extends StatelessWidget {
                     )
                   : controller.reqState.value == RequestEnum.successes
                       ? GetBuilder<UsersController>(builder: (controller) {
-                          return ListView.separated(
-                            itemCount: controller.showSearchedUsers
-                                ? controller.searchedUsers.length
-                                : controller.users.length + 1,
-                            controller: controller.scrollController,
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 10.h),
-                            itemBuilder: (BuildContext context, int index) {
-                              return UserCard(index: index);
-                            },
-                          );
+                          return controller.users.isEmpty
+                              ? const Center(child: Text('No users found'))
+                              : ListView.separated(
+                                  itemCount: controller.showSearchedUsers
+                                      ? controller.searchedUsers.length
+                                      : controller.users.length + 1,
+                                  controller: controller.scrollController,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(height: 10.h),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return index == controller.users.length &&
+                                            !controller.isMaxUers &&
+                                            !controller.isSearchNmaesShow.value
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : index == controller.users.length &&
+                                                controller.isMaxUers
+                                            ? const SizedBox()
+                                            : UserCard(index: index);
+                                  },
+                                );
                         })
                       : const SizedBox())),
     );

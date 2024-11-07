@@ -33,6 +33,15 @@ class UsersPage extends StatelessWidget {
               children: [
                 AppTopSection(
                   text: controller.userType,
+                  isUserPage: true,
+                  onBackTap: () {
+                    if (!controller.showSearchedUsers) {
+                      Get.back();
+                    } else {
+                      controller.showSearchedUsers = false;
+                      controller.update();
+                    }
+                  },
                 ),
                 SizedBox(height: 15.h),
                 SizedBox(height: 60.h),

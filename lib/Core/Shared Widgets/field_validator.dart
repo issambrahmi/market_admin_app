@@ -3,12 +3,20 @@ String? appValidator({
   bool isRequired = false,
   bool isEmail = false,
   bool isPassword = false,
+  bool isNumber = false,
   int minLength = 0,
   int maxLength = 100,
 }) {
   // Check if the field is required and is empty
   if (isRequired && value.isEmpty) {
     return 'This field is required';
+  }
+
+  // check if is a number
+  if (isNumber) {
+    if (num.tryParse(value) == null) {
+      return 'this fialed should be a number';
+    }
   }
 
   // Check for email format

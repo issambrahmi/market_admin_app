@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:market_admin_app/Controller/products_controller.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
-import 'package:market_admin_app/View/Products%20Page/commonW/add_new_product_page.dart';
+import 'package:market_admin_app/View/Products%20Page/add_new_product_page.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  const ProductCard({super.key, required this.index});
 
+  final int index;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Get.to(() => const AddNewProductPage()),
+    ProductsController controller = Get.find<ProductsController>();
+    return InkWell(
+      onTap: () {
+        if (controller.isCategorieLoad == false) {
+          controller.loadCategories();
+          controller.isCategorieLoad = true;
+        }
+        controller.isAddPage = false;
+        controller.fillFields(controller.isSearchNmaesShow.value
+            ? controller.searchedProducts[index]
+            : controller.products[index]);
+        Get.to(() => const AddNewProductPage());
+      },
       child: Container(
         padding: EdgeInsets.all(10.sp),
-        // decoration: BoxDecoration(
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -47,7 +56,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Ifri boisson 2L',
+                    controller.products[index].name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -56,7 +65,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Boisson',
+                    controller.products[index].categorirName.toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

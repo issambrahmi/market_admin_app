@@ -13,6 +13,8 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UsersController controller = Get.find<UsersController>();
+    // print('index ${index}');
+    // print(controller.users[index].username);
     return InkWell(
       onTap: () {
         controller.fillFields(controller.showSearchedUsers
@@ -64,7 +66,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    controller.userType,
+                    '${controller.userType} ${index + 1}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

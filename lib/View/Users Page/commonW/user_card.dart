@@ -13,8 +13,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UsersController controller = Get.find<UsersController>();
-    // print('index ${index}');
-    // print(controller.users[index].username);
+    
     return InkWell(
       onTap: () {
         controller.fillFields(controller.showSearchedUsers

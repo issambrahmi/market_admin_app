@@ -129,7 +129,7 @@ class ProductForm extends StatelessWidget {
                 color: AppColor.greencolor,
                 textColor: Colors.white,
                 onTap: () {
-                  controller.isAddPage ? controller.addProduct() : null;
+                  controller.isAddPage ? controller.addProduct() : controller.updateProduct();
                 },
               ),
               SizedBox(height: 30.h),

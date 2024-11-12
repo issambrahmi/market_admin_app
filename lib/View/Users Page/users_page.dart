@@ -56,7 +56,7 @@ class UsersPage extends StatelessWidget {
               isNmaesShow: controller.isSearchNmaesShow,
               names: controller.usersNames,
               reqState: controller.searchReqState,
-              onTap: () {
+              onTap: (index) {
                 controller.isSearchNmaesShow.value = false;
                 controller.showSearchedUsers = true;
                 controller.searchedUsers.clear();

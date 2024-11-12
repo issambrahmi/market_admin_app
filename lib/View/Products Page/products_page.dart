@@ -1,11 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/products_controller.dart';
+import 'package:market_admin_app/Core/Constants/app_color.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/field_validator.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/floating_action_button.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/search_card.dart';
+import 'package:market_admin_app/Model/Enums/request_enum.dart';
 import 'package:market_admin_app/View/Products%20Page/add_new_product_page.dart';
 import 'package:market_admin_app/View/Products%20Page/commonW/products_list.dart';
 
@@ -19,13 +23,13 @@ class ProductsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       floatingActionButton: AppFloatingActionButton(
         onTap: () {
-          if (controller.isCategorieLoad == false) {
-            controller.loadCategories();
-            controller.isCategorieLoad = true;
-          }
           if (controller.isAddPage == false) {
             controller.isAddPage = true;
             controller.clearFields();
+          }
+          if (controller.isCategorieLoad == false) {
+            controller.loadCategories();
+            controller.isCategorieLoad = true;
           }
           Get.to(() => const AddNewProductPage());
         },
@@ -59,14 +63,25 @@ class ProductsPage extends StatelessWidget {
               reqState: controller.searchReqState,
               isNmaesShow: controller.isSearchNmaesShow,
               names: controller.productsNames,
-              onTap: () {
+              onTap: (index) {
                 controller.isSearchNmaesShow.value = false;
                 controller.showSearchedUsers = true;
                 controller.searchedProducts.clear();
-                print(controller.searchProduct.text);
-                controller.searchForProducts();
+                index != null
+                    ? controller
+                        .searchForProducts(controller.productsNames[index])
+                    : null;
               },
-            )
+            ),
+            controller.deleteReqState.value == RequestEnum.waiting
+                ? Center(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.4),
+                      child:
+                          CircularProgressIndicator(color: AppColor.greencolor),
+                    ),
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

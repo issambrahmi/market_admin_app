@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/products_controller.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_alert_dialogue.dart';
 import 'package:market_admin_app/View/Products%20Page/add_new_product_page.dart';
 
 class ProductCard extends StatelessWidget {
@@ -14,14 +15,16 @@ class ProductCard extends StatelessWidget {
     ProductsController controller = Get.find<ProductsController>();
     return InkWell(
       onTap: () {
+        controller.isAddPage = false;
+        controller.updatedProductIndex = index;
         if (controller.isCategorieLoad == false) {
           controller.loadCategories();
           controller.isCategorieLoad = true;
         }
-        controller.isAddPage = false;
-        controller.fillFields(controller.isSearchNmaesShow.value
+        controller.fillFields(controller.showSearchedUsers
             ? controller.searchedProducts[index]
             : controller.products[index]);
+
         Get.to(() => const AddNewProductPage());
       },
       child: Container(
@@ -56,7 +59,9 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    controller.products[index].name,
+                    controller.showSearchedUsers
+                        ? controller.searchedProducts[index].name
+                        : controller.products[index].name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -65,7 +70,10 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    controller.products[index].categorirName.toString(),
+                    controller.showSearchedUsers
+                        ? controller.searchedProducts[index].categorirName
+                            .toString()
+                        : controller.products[index].categorirName.toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -78,12 +86,22 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Container(
-              padding: EdgeInsets.all(5.sp),
-              child: Icon(
-                Icons.delete,
-                size: 20.sp,
-                color: AppColor.deleteColor,
+            InkWell(
+              onTap: () => appAlertDialogue(
+                  context: context,
+                  height: 160.h,
+                  text: 'Are you sure yo want to delete this product',
+                  onTap: () {
+                    controller.deleteProduct(index);
+                    Get.back();
+                  }),
+              child: Container(
+                padding: EdgeInsets.all(5.sp),
+                child: Icon(
+                  Icons.delete,
+                  size: 20.sp,
+                  color: AppColor.deleteColor,
+                ),
               ),
             )
           ],

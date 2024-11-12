@@ -27,19 +27,22 @@ class ProductsController extends GetxController {
   late GlobalKey<FormState> key;
   String categorieValue = '';
 
-  bool isMaxUers = false;
-  RxBool isSearchNmaesShow = false.obs;
+  bool isMaxProducts = false;
+  bool isMaxSearchedProducts = false;
+  RxBool isSearchNmaesShow = false.obs; // for show searched names
   bool isAddPage = true; // for switch between edit and add pages
   bool showSearchedUsers =
       false; // for switch between searched products and default products
   bool isCategorieLoad = false;
-  Rx<RequestEnum> reqState = RequestEnum.start.obs; // for the user page
-  Rx<RequestEnum> deleteReqState = RequestEnum.start.obs; // for the delete user
-  Rx<RequestEnum> addReqState = RequestEnum.start.obs; // for the add user
+  Rx<RequestEnum> reqState = RequestEnum.start.obs; // for the product page
+  Rx<RequestEnum> deleteReqState = RequestEnum.start.obs; // for the delete product
+  Rx<RequestEnum> addReqState = RequestEnum.start.obs; // for the add product
   Rx<RequestEnum> searchReqState = RequestEnum.start.obs; // for search
   Rx<RequestEnum> categorieReqState =
       RequestEnum.start.obs; // for categories loading
 
+  int updatedProductIndex = 0;
+  int productSearchedIndex = 0;
   Rx<String> errorMessage = ''.obs;
 
   @override
@@ -63,7 +66,11 @@ class ProductsController extends GetxController {
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent) {
-        loadMoreProducts();
+        if (showSearchedUsers) {
+          loadMoreSearchProducts();
+        } else {
+          loadMoreProducts();
+        }
       }
     });
     super.onInit();
@@ -85,6 +92,9 @@ class ProductsController extends GetxController {
   }
 
   void fillFields(ProductModel product) {
+    if (product.categorirName != null) {
+      categorieValue = product.categorirName.toString();
+    }
     productName.text = product.name;
     priceDetailleController.text = product.priceD.toString();
     priceGrosController.text = product.priceG.toString();
@@ -98,12 +108,12 @@ class ProductsController extends GetxController {
     try {
       final response = await http.get(Uri.parse("${AppLinks.getProduct}/0"));
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['products'];
-        data.forEach((product) {
+        final List data = jsonDecode(response.body)['products'];
+        for (var product in data) {
           products.add(ProductModel.fromMap(product));
-        });
+        }
         if (products.length < 16) {
-          isMaxUers = true;
+          isMaxProducts = true;
           update();
         }
         reqState.value = RequestEnum.successes;
@@ -124,9 +134,9 @@ class ProductsController extends GetxController {
       final response = await http
           .get(Uri.parse("${AppLinks.getProduct}/${products.length}"));
       if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body)['users'];
+        final List data = jsonDecode(response.body)['products'];
         if (data.length < 16) {
-          isMaxUers = true;
+          isMaxProducts = true;
         }
         for (var user in data) {
           products.add(ProductModel.fromMap(user));
@@ -145,10 +155,10 @@ class ProductsController extends GetxController {
         "${AppLinks.searchProduct}/${searchProduct.text.trim()}",
       ));
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['products'];
-        data.forEach((product) {
+        List data = jsonDecode(response.body)['products'];
+        for (var product in data) {
           productsNames.add(product['name']);
-        });
+        }
         searchReqState.value = RequestEnum.successes;
       } else if (response.statusCode == 400) {
         errorMessage.value = jsonDecode(response.body)['message'];
@@ -162,17 +172,20 @@ class ProductsController extends GetxController {
     }
   }
 
-  void searchForProducts() async {
+  void searchForProducts(String? productName) async {
     reqState.value = RequestEnum.waiting;
     try {
       final response = await http.get(Uri.parse(
-        "${AppLinks.searchProduct}/${searchProduct.text.trim()}",
+        "${AppLinks.searchProduct}/${productName == null ? searchProduct.text.trim() : productName.trim()}/0",
       ));
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['products'];
-        data.forEach((product) {
+        final List data = jsonDecode(response.body)['products'];
+        if (data.length < 16) {
+          isMaxSearchedProducts = true;
+        }
+        for (var product in data) {
           searchedProducts.add(ProductModel.fromMap(product));
-        });
+        }
         reqState.value = RequestEnum.successes;
       } else if (response.statusCode == 400) {
         errorMessage.value = jsonDecode(response.body)['message'];
@@ -183,6 +196,25 @@ class ProductsController extends GetxController {
     } catch (e) {
       debugPrint('** $e');
       reqState.value = RequestEnum.serverError;
+    }
+  }
+
+  void loadMoreSearchProducts() async {
+    try {
+      final response = await http.get(Uri.parse(
+        "${AppLinks.searchProduct}/${searchProduct.text.trim()}/${searchedProducts.length}",
+      ));
+      if (response.statusCode == 200) {
+        List data = jsonDecode(response.body)['products'];
+        if (data.length < 16) {
+          isMaxSearchedProducts = true;
+        }
+        for (var product in data) {
+          searchedProducts.add(ProductModel.fromMap(product));
+        }
+      }
+    } catch (e) {
+      debugPrint('** $e');
     }
   }
 
@@ -226,49 +258,86 @@ class ProductsController extends GetxController {
     addReqState.value = RequestEnum.start;
   }
 
-  // void updateUser(int index) async {
-  //   deleteReqState.value = RequestEnum.waiting;
-  //   if (key.currentState!.validate()) {
-  //     try {
-  //       Map data = {};
+  void updateProduct() async {
+    addReqState.value = RequestEnum.waiting;
+    if (key.currentState!.validate()) {
+      try {
+        final response = await http.put(
+            Uri.parse(
+              AppLinks.editProduct,
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'id': products[updatedProductIndex].id,
+              'name': productName.text.trim(),
+              'categorieId':
+                  categories.firstWhere((c) => c.name == categorieValue).id,
+              'priceD': double.parse(priceDetailleController.text.trim()),
+              'priceG': double.parse(priceGrosController.text.trim()),
+              'priceSG': double.parse(priceSuperGrosController.text.trim()),
+              'minQntG': int.parse(minQntGros.text.trim()),
+              'minQntSG': int.parse(minQntSuperGros.text.trim()),
+            }));
+        if (response.statusCode == 200) {
+          products[updatedProductIndex] =
+              _updateProductData(products[updatedProductIndex]);
+          addReqState.value = RequestEnum.start;
+          update();
+          Get.back();
+        } else if (response.statusCode == 400) {
+          errorMessage.value = jsonDecode(response.body)['message'];
+          addReqState.value = RequestEnum.dataError;
+        } else {
+          addReqState.value = RequestEnum.serverError;
+        }
+      } catch (e) {
+        debugPrint('** $e');
+        addReqState.value = RequestEnum.serverError;
+      }
+    }
+  }
 
-  //       final response = await http.put(
-  //           Uri.parse(
-  //             AppLinks.editProduct,
-  //           ),
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: jsonEncode({
-  //             'id': users[index].id,
-  //             'username': users[index].username,
-  //             'email': users[index].email,
-  //             'password': users[index].id,
-  //             'id': users[index].id,
-  //           }));
-  //       if (response.statusCode == 200) {
-  //         users.removeAt(index);
-  //         deleteReqState.value = RequestEnum.successes;
-  //         update();
-  //       } else if (response.statusCode == 400) {
-  //         errorMessage.value = jsonDecode(response.body)['message'];
-  //         deleteReqState.value = RequestEnum.dataError;
-  //       } else {
-  //         deleteReqState.value = RequestEnum.serverError;
-  //       }
-  //     } catch (e) {
-  //       debugPrint('** $e');
-  //       deleteReqState.value = RequestEnum.serverError;
-  //     }
-  //   }
-  // }
+  void deleteProduct(int index) async {
+    deleteReqState.value = RequestEnum.waiting;
+    try {
+      final response = await http.delete(
+          Uri.parse(
+            AppLinks.deleteProduct,
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'id': showSearchedUsers
+                ? searchedProducts[index].id
+                : products[index].id,
+          }));
+      if (response.statusCode == 200) {
+        showSearchedUsers
+            ? searchedProducts.removeAt(index)
+            : products.removeAt(index);
+        deleteReqState.value = RequestEnum.successes;
+        update();
+      } else if (response.statusCode == 400) {
+        errorMessage.value = jsonDecode(response.body)['message'];
+        deleteReqState.value = RequestEnum.dataError;
+      } else {
+        deleteReqState.value = RequestEnum.serverError;
+      }
+    } catch (e) {
+      debugPrint('** $e');
+      deleteReqState.value = RequestEnum.serverError;
+    }
+  }
 
   void loadCategories() async {
     categorieReqState.value = RequestEnum.waiting;
     try {
       final response = await http.get(Uri.parse(AppLinks.getCategories));
       if (response.statusCode == 200) {
-        List data = jsonDecode(response.body)['categorie'];
+        List data = jsonDecode(response.body)['categories'];
         for (var categorie in data) {
           categories.add(CategorieModel.fromMap(categorie));
         }
@@ -285,28 +354,15 @@ class ProductsController extends GetxController {
     }
   }
 
-  List _setUpdatedFields(ProductModel product, Map<String, dynamic> newData) {
-    List updatedData = [];
-
-    if (product.name != newData['name']) {
-      updatedData.add(newData['name']);
-    }
-
-    if (product.priceD != newData['priceD']) {
-      updatedData.add(newData['priceD']);
-    }
-    if (product.priceG != newData['priceG']) {
-      updatedData.add(newData['priceG']);
-    }
-    if (product.priceSG != newData['priceSG']) {
-      updatedData.add(newData['priceSG']);
-    }
-    if (product.minQntG != newData['minQntG']) {
-      updatedData.add(newData['minQntG']);
-    }
-    if (product.minQntSG != newData['minQntSG']) {
-      updatedData.add(newData['minQntSG']);
-    }
-    return updatedData;
+  ProductModel _updateProductData(ProductModel product) {
+    return ProductModel(
+        id: product.id,
+        name: productName.text.trim(),
+        categorirName: categorieValue,
+        priceD: double.parse(priceDetailleController.text.trim()),
+        priceG: double.parse(priceGrosController.text.trim()),
+        priceSG: double.parse(priceSuperGrosController.text.trim()),
+        minQntG: int.parse(minQntGros.text.trim()),
+        minQntSG: int.parse(minQntSuperGros.text.trim()));
   }
 }

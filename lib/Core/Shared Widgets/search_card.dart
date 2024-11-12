@@ -20,7 +20,7 @@ class SearchCard extends StatelessWidget {
   final Rx<RequestEnum> reqState;
   final List names;
   final RxBool isNmaesShow;
-  final void Function() onTap;
+  final void Function(int? index) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,9 @@ class SearchCard extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return InkWell(
-                                      onTap: onTap,
+                                      onTap: () {
+                                        onTap(index);
+                                      },
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: Text(

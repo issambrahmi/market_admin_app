@@ -16,7 +16,7 @@ class CategoriesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => addNewCategorie(controller.categorieName),
+        onPressed: () => addNewCategorie(),
         label: Text(
           'Add categorie',
           style: TextStyle(

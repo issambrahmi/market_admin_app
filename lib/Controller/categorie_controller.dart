@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:market_admin_app/Core/Constants/app_links.dart';
@@ -12,6 +14,8 @@ class CategorieController extends GetxController {
   List<CategorieModel> categories = [];
 
   late TextEditingController categorieName;
+  late GlobalKey<FormState> key;
+
   Rx<RequestEnum> reqState = RequestEnum.start.obs; // for the user page
   Rx<RequestEnum> deleteReqState = RequestEnum.start.obs; // for the delete user
   Rx<RequestEnum> addReqState = RequestEnum.start.obs; // for the add user
@@ -20,6 +24,7 @@ class CategorieController extends GetxController {
   void onInit() {
     getCategories();
     categorieName = TextEditingController();
+    key = GlobalKey<FormState>();
     super.onInit();
   }
 
@@ -69,43 +74,32 @@ class CategorieController extends GetxController {
     }
   }
 
-  //  void addProduct() async {
-  //   addReqState.value = RequestEnum.waiting;
-  //   if (key.currentState!.validate()) {
-  //     try {
-  //       final Map<String, dynamic> product = {
-  //         'name': productName.text.trim(),
-  //         'categorieId':
-  //             categories.firstWhere((c) => c.name == categorieValue).id,
-  //         'priceD': priceDetailleController.text.trim(),
-  //         'priceG': priceGrosController.text.trim(),
-  //         'priceSG': priceSuperGrosController.text.trim(),
-  //         'minQntG': minQntGros.text.trim(),
-  //         'minQntSG': minQntSuperGros.text.trim(),
-  //       };
-  //       final response = await http.post(Uri.parse(AppLinks.addProduct),
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: jsonEncode(product));
-  //       if (response.statusCode == 200) {
-  //         products
-  //             .add(ProductModel.fromMap(jsonDecode(response.body)['product']));
-  //         addReqState.value = RequestEnum.successes;
-  //         clearFields();
-  //         update();
-  //         Get.back();
-  //       } else if (response.statusCode == 400) {
-  //         errorMessage.value = jsonDecode(response.body)['message'];
-  //         addReqState.value = RequestEnum.dataError;
-  //       } else {
-  //         addReqState.value = RequestEnum.serverError;
-  //       }
-  //     } catch (e) {
-  //       debugPrint('** $e');
-  //       addReqState.value = RequestEnum.serverError;
-  //     }
-  //   }
-  //   addReqState.value = RequestEnum.start;
-  // }
+  void addProduct() async {
+    print(1);
+    addReqState.value = RequestEnum.waiting;
+    if (key.currentState!.validate()) {
+      try {
+        final response = await http.post(Uri.parse(AppLinks.addCategories),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'name': categorieName.text.trim(),
+            }));
+        if (response.statusCode == 200) {
+          categories.add(
+              CategorieModel.fromMap(jsonDecode(response.body)['categorie']));
+          categorieName.clear();
+          addReqState.value = RequestEnum.successes;
+          update();
+          Get.back();
+        } else {
+          addReqState.value = RequestEnum.serverError;
+        }
+      } catch (e) {
+        debugPrint('** $e');
+        addReqState.value = RequestEnum.serverError;
+      }
+    }
+  }
 }

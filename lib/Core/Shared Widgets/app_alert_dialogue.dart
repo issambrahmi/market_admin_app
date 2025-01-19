@@ -8,6 +8,7 @@ void appAlertDialogue(
     {required BuildContext context,
     required String text,
     required double height,
+    Widget? additionelWidget,
     required Function() onTap}) {
   showGeneralDialog(
       context: context,
@@ -39,6 +40,8 @@ void appAlertDialogue(
                     ),
                   ),
                   SizedBox(height: 20.h),
+                  additionelWidget ?? const SizedBox(),
+                  SizedBox(height: 20.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -47,6 +50,7 @@ void appAlertDialogue(
                         height: 40.h,
                         width: 115.w,
                         textSize: 15.sp,
+                        textColor: Colors.white,
                         color: AppColor.deleteColor,
                         onTap: () => Get.back(),
                       ),
@@ -54,9 +58,9 @@ void appAlertDialogue(
                         text: 'Confirmer',
                         height: 40.h,
                         width: 115.w,
-                        textSize: 13.sp,
-                        gradient: LinearGradient(
-                            colors: [AppColor.darkBlue, AppColor.greencolor]),
+                        textSize: 15.sp,
+                        textColor: Colors.white,
+                        color: AppColor.greencolor,
                         onTap: onTap,
                       ),
                     ],

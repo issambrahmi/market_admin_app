@@ -33,10 +33,10 @@ class AppLinks {
   static const String getProduct = '$adminLink/products';
 
   //////////////////////// Orders ////////////////////////////////////////
-  static const String editOrderStatus = '$adminLink/order/status';
-  static const String editOrderItems = '$adminLink/order/items';
-  static const String deleteOrder = '$adminLink/order';
-  static const String searchOrder = '$adminLink/categorie/search';
-  static const String getOrders = '$adminLink/order';
-  static const String getOrderItems = '$adminLink/order/items';
+  static const String editOrderStatus = '$adminLink/orders/status';
+  static const String editOrderItems = '$adminLink/orders/items';
+  static const String deleteOrder = '$adminLink/orders';
+  static const String searchOrder = '$adminLink/orders/categorie/search';
+  static const String getOrders = '$adminLink/orders';
+  static const String getOrderItems = '$adminLink/orders/items';
 }

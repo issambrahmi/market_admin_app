@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:market_admin_app/Core/Constants/app_links.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_alert_dialogue.dart';
 import 'package:market_admin_app/Model/Enums/request_enum.dart';
 import 'package:market_admin_app/Model/Models/categorie_model.dart';
 import 'package:http/http.dart' as http;
@@ -74,8 +76,7 @@ class CategorieController extends GetxController {
     }
   }
 
-  void addProduct() async {
-    print(1);
+  void addProduct(BuildContext context) async {
     addReqState.value = RequestEnum.waiting;
     if (key.currentState!.validate()) {
       try {
@@ -93,9 +94,17 @@ class CategorieController extends GetxController {
           addReqState.value = RequestEnum.successes;
           update();
           Get.back();
+        } else if (response.statusCode == 400) {
+          Get.back();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('this categorie alredy ecxist'),
+                duration: Duration(seconds: 2)),
+          );
         } else {
           addReqState.value = RequestEnum.serverError;
         }
+        categorieName.clear();
       } catch (e) {
         debugPrint('** $e');
         addReqState.value = RequestEnum.serverError;

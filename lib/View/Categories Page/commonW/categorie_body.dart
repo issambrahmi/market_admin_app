@@ -34,7 +34,7 @@ class CategorieBody extends StatelessWidget {
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   onTap: () =>
-                                      addNewCategorie(),
+                                      addNewCategorie(context),
                                   child: Container(
                                     padding: EdgeInsets.all(15.sp),
                                     decoration: BoxDecoration(

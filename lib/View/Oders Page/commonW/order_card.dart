@@ -1,44 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:market_admin_app/Controller/order_controller.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_alert_dialogue.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/app_button.dart';
-import 'package:market_admin_app/View/Oders%20Page/commonW/tracking_order.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_circle_indicator.dart';
+import 'package:market_admin_app/Core/Shared%20Widgets/app_drop_down.dart';
+import 'package:market_admin_app/Model/Enums/request_enum.dart';
+import 'package:market_admin_app/Model/Models/order_model.dart';
 import 'package:market_admin_app/View/Oders%20Page/orders_detailes_page.dart';
 
 class OrderCard extends StatelessWidget {
-  const OrderCard({super.key});
+  const OrderCard({super.key, required this.order, required this.index});
 
+  final OrderModel order;
+  final int index;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(10.sp),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.delete,
-                size: 20.sp,
-                color: AppColor.deleteColor,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(20.sp),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey, width: 1),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    OrderController controller = Get.find<OrderController>();
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(20.sp),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColor.mainScreencolor, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // const TrackingOrder(),
+          // SizedBox(height: 15.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TrackingOrder(),
-              SizedBox(height: 15.h),
               Row(
                 children: [
                   Text(
@@ -48,7 +43,7 @@ class OrderCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5.w),
                   Text(
-                    'W35THW: ',
+                    order.id.toString(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -57,45 +52,108 @@ class OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 5.h),
-              Text(
-                'Mar 21, 1.25Pm',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5.h),
-              Row(
-                children: [
-                  Text(
-                    'Totale : ',
-                    style:
-                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {},
+                child: SizedBox(
+                  child: Icon(
+                    Icons.delete,
+                    color: AppColor.deleteColor,
+                    size: 25.sp,
                   ),
-                  SizedBox(width: 5.w),
-                  Text(
-                    '27000 Da',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15.h),
-              AppButton(
-                text: 'View Order Detailes',
-                height: 40.h,
-                width: double.infinity,
-                textSize: 15.sp,
-                color: AppColor.greencolor,
-                onTap: () {
-                  Get.to(() => const OrdersDetailesPage());
-                },
+                ),
               )
             ],
           ),
-        ),
-      ],
+          SizedBox(height: 5.h),
+          Text(
+            order.date.toString(),
+            //  'Mar 21, 1.25Pm',
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5.h),
+          Row(
+            children: [
+              Text(
+                'Items : ',
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 5.w),
+              Text(
+                '25',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                'Totale : ',
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 5.w),
+              Text(
+                '${order.totalePrice.toString()} Da',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          AppButton(
+            text: 'View Order Detailes',
+            height: 40.h,
+            width: double.infinity,
+            textSize: 15.sp,
+            textColor: Colors.white,
+            color: AppColor.darkBlue,
+            onTap: () {
+              controller.orderIndex = index;
+              Get.to(() => const OrdersDetailesPage());
+              controller.getOrderItems(order.id, index);
+            },
+          ),
+          SizedBox(height: 10.h),
+          AppButton(
+            text: 'Accept Order',
+            height: 40.h,
+            width: double.infinity,
+            textSize: 15.sp,
+            textColor: Colors.white,
+            color: AppColor.greencolor,
+            onTap: () {
+              controller.getWorkers();
+              appAlertDialogue(
+                  context: context,
+                  text: 'choose worker',
+                  height: 200.h,
+                  onTap: () {},
+                  additionelWidget: Obx(
+                    () => controller.workersState.value == RequestEnum.waiting
+                        ? AppCircleIndicator(size: 20.sp)
+                        : AppDropDownButton(
+                            height: 50.h,
+                            dropDowns: controller.workers
+                                .map((worker) => worker.username)
+                                .toList(),
+                            value: controller.workerName,
+                            onChange: (value) {
+                              if (controller.workerName != value) {
+                                controller.workerName = value.toString();
+                              }
+                            },
+                          ),
+                  ));
+            },
+          )
+        ],
+      ),
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:market_admin_app/Core/Shared%20Widgets/app_button.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/app_form_field.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/field_validator.dart';
 
-void addNewCategorie() {
+void addNewCategorie(BuildContext context) {
   CategorieController controller = Get.find<CategorieController>();
   Get.dialog(
     AlertDialog(
@@ -45,7 +45,7 @@ void addNewCategorie() {
                   textSize: 14.sp,
                   color: AppColor.greencolor,
                   onTap: () {
-                    controller.addProduct();
+                    controller.addProduct(context);
                   },
                 ),
               ],

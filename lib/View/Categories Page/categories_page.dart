@@ -12,11 +12,11 @@ class CategoriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CategorieController controller = Get.put(CategorieController());
+    Get.put(CategorieController());
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => addNewCategorie(),
+        onPressed: () => addNewCategorie(context),
         label: Text(
           'Add categorie',
           style: TextStyle(

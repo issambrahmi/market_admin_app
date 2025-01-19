@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
+import 'package:market_admin_app/Model/Models/order_model.dart';
 
 class ProductCardProductDetailes extends StatelessWidget {
-  const ProductCardProductDetailes({super.key});
+  const ProductCardProductDetailes({super.key, required this.item});
 
+  final OrderItem item;
   @override
   Widget build(BuildContext context) {
     TextEditingController qnt = TextEditingController();
@@ -34,7 +36,7 @@ class ProductCardProductDetailes extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Boisson Ifri 1L ananas',
+                item.product.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -43,20 +45,19 @@ class ProductCardProductDetailes extends StatelessWidget {
                 ),
               ),
               Text(
-                'Qnt : 10',
+                'Qnt : ${item.qnt}',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'prix : 6500 DA',
+                'prix : ${item.qnt * item.product.priceD} DA',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            
             ],
           ),
           SizedBox(width: 10.w),

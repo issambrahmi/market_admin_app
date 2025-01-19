@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderDetailesDownSec extends StatelessWidget {
-  const OrderDetailesDownSec({super.key});
+  const OrderDetailesDownSec({super.key, required this.totalPrice});
 
+  final double totalPrice;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +40,7 @@ class OrderDetailesDownSec extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '18000 Da',
+                  '$totalPrice Da',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 16.sp,

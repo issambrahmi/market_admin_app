@@ -25,6 +25,8 @@ class OrderController extends GetxController {
       RequestEnum.start.obs; // for the order detailles page
   Rx<RequestEnum> workersState =
       RequestEnum.start.obs; // for the workers loading
+  Rx<RequestEnum> acceptOrderState =
+      RequestEnum.start.obs; // loading for accept order
   RxBool isNameShow = false.obs;
   RxBool isAccepted = false.obs;
 
@@ -147,6 +149,37 @@ class OrderController extends GetxController {
     } catch (e) {
       debugPrint('** $e');
       deleteReqState.value = RequestEnum.serverError;
+    }
+  }
+
+  void acceptOrder({required int orderIndex}) async {
+    acceptOrderState.value = RequestEnum.waiting;
+    try {
+      final response = await http.post(
+          Uri.parse(
+            AppLinks.acceptOrder,
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'orderId': newOrders[orderIndex].id,
+            'workerId': workers
+                .firstWhere((worker) => worker.username == workerName)
+                .id,
+          }));
+      if (response.statusCode == 200) {
+        acceptedOrders.add(newOrders[orderIndex]);
+        newOrders.removeAt(orderIndex);
+        acceptOrderState.value = RequestEnum.successes;
+        update();
+        Get.back();
+      } else {
+        acceptOrderState.value = RequestEnum.serverError;
+      }
+    } catch (e) {
+      debugPrint('** $e');
+      acceptOrderState.value = RequestEnum.serverError;
     }
   }
 }

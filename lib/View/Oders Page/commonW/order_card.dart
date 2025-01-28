@@ -9,6 +9,7 @@ import 'package:market_admin_app/Core/Shared%20Widgets/app_circle_indicator.dart
 import 'package:market_admin_app/Core/Shared%20Widgets/app_drop_down.dart';
 import 'package:market_admin_app/Model/Enums/request_enum.dart';
 import 'package:market_admin_app/Model/Models/order_model.dart';
+import 'package:market_admin_app/View/Oders%20Page/commonW/accept_order_dialogue.dart';
 import 'package:market_admin_app/View/Oders%20Page/orders_detailes_page.dart';
 
 class OrderCard extends StatelessWidget {
@@ -107,6 +108,19 @@ class OrderCard extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
           AppButton(
+            text: 'Accept Order',
+            height: 40.h,
+            width: double.infinity,
+            textSize: 15.sp,
+            textColor: Colors.white,
+            color: AppColor.greencolor,
+            onTap: () {
+              controller.getWorkers();
+              acceptOrderDialogue(context: context, orderIndex: index);
+            },
+          ),
+          SizedBox(height: 10.h),
+          AppButton(
             text: 'View Order Detailes',
             height: 40.h,
             width: double.infinity,
@@ -119,39 +133,6 @@ class OrderCard extends StatelessWidget {
               controller.getOrderItems(order.id, index);
             },
           ),
-          SizedBox(height: 10.h),
-          AppButton(
-            text: 'Accept Order',
-            height: 40.h,
-            width: double.infinity,
-            textSize: 15.sp,
-            textColor: Colors.white,
-            color: AppColor.greencolor,
-            onTap: () {
-              controller.getWorkers();
-              appAlertDialogue(
-                  context: context,
-                  text: 'choose worker',
-                  height: 200.h,
-                  onTap: () {},
-                  additionelWidget: Obx(
-                    () => controller.workersState.value == RequestEnum.waiting
-                        ? AppCircleIndicator(size: 20.sp)
-                        : AppDropDownButton(
-                            height: 50.h,
-                            dropDowns: controller.workers
-                                .map((worker) => worker.username)
-                                .toList(),
-                            value: controller.workerName,
-                            onChange: (value) {
-                              if (controller.workerName != value) {
-                                controller.workerName = value.toString();
-                              }
-                            },
-                          ),
-                  ));
-            },
-          )
         ],
       ),
     );

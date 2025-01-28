@@ -29,20 +29,23 @@ class OrdersList extends StatelessWidget {
                                 (!controller.isAccepted.value &&
                                     controller.newOrders.isEmpty)
                             ? const Center(child: Text('No orders found'))
-                            : ListView.separated(
-                                itemCount: controller.isAccepted.value
-                                    ? controller.acceptedOrders.length
-                                    : controller.newOrders.length,
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 10.h),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return OrderCard(
-                                    index: index,
-                                      order: controller.isAccepted.value
-                                          ? controller.acceptedOrders[index]
-                                          : controller.newOrders[index]);
-                                },
-                              ))
+                            : GetBuilder<OrderController>(
+                                builder: (controller) => ListView.separated(
+                                      itemCount: controller.isAccepted.value
+                                          ? controller.acceptedOrders.length
+                                          : controller.newOrders.length,
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(height: 10.h),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return OrderCard(
+                                            index: index,
+                                            order: controller.isAccepted.value
+                                                ? controller
+                                                    .acceptedOrders[index]
+                                                : controller.newOrders[index]);
+                                      },
+                                    )))
                         : const SizedBox();
           })),
     );

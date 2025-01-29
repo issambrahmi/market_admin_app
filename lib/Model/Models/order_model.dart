@@ -3,7 +3,8 @@ import 'package:market_admin_app/Model/Models/product_model.dart';
 
 class OrderModel {
   final int? id;
-  final int clientId;
+  final String clientName;
+   String? workerName;
   final String date;
   final double totalePrice;
   final String status;
@@ -11,7 +12,8 @@ class OrderModel {
 
   OrderModel({
     this.id,
-    required this.clientId,
+    required this.clientName,
+    required this.workerName,
     required this.date,
     required this.totalePrice,
     required this.status,
@@ -24,7 +26,8 @@ class OrderModel {
 
     return OrderModel(
       id: data['id'],
-      clientId: data['client_id'],
+      clientName: data['client_name'],
+      workerName: data['worker_name'],
       date: date,
       orderItems: [],
       totalePrice: (data['total_price'] as num).toDouble(),

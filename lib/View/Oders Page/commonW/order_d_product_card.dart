@@ -41,22 +41,45 @@ class ProductCardProductDetailes extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                'Qnt : ${item.qnt}',
-                style: TextStyle(
-                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'prix : ${item.qnt * item.product.priceD} DA',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Qnt : ',
+                    style:
+                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 5.w),
+                  Text(
+                    '${item.qnt}',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'prix : ',
+                    style:
+                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 5.w),
+                  Text(
+                    '${(item.qnt * item.product.priceD).toStringAsFixed(2)} DA',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

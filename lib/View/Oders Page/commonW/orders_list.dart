@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/order_controller.dart';
 import 'package:market_admin_app/Model/Enums/request_enum.dart';
-import 'package:market_admin_app/View/Oders%20Page/commonW/order_card.dart';
+import 'package:market_admin_app/View/Oders%20Page/commonW/accepted_order_card.dart';
+import 'package:market_admin_app/View/Oders%20Page/commonW/new_order_card.dart';
 
 class OrdersList extends StatelessWidget {
   const OrdersList({super.key});
@@ -38,12 +39,15 @@ class OrdersList extends StatelessWidget {
                                           SizedBox(height: 10.h),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return OrderCard(
-                                            index: index,
-                                            order: controller.isAccepted.value
-                                                ? controller
-                                                    .acceptedOrders[index]
-                                                : controller.newOrders[index]);
+                                        return controller.isAccepted.value
+                                            ? AcceptedOrderCard(
+                                                index: index,
+                                                order: controller
+                                                    .acceptedOrders[index])
+                                            : NewOrderCard(
+                                                index: index,
+                                                order: controller
+                                                    .newOrders[index]);
                                       },
                                     )))
                         : const SizedBox();

@@ -9,10 +9,11 @@ import 'package:market_admin_app/Model/Models/product_model.dart';
 import 'package:market_admin_app/Model/Models/user_model.dart';
 
 class OrderController extends GetxController {
-  late TextEditingController searchCommande;
+  late TextEditingController searchValue;
 
   List<OrderModel> newOrders = [];
   List<OrderModel> acceptedOrders = [];
+  List<OrderModel> searchedOrders = [];
   List<UserModel> workers = [];
   List names = [];
   int orderIndex = 0;
@@ -32,7 +33,7 @@ class OrderController extends GetxController {
 
   @override
   void onInit() {
-    searchCommande = TextEditingController();
+    searchValue = TextEditingController();
     getOrders();
     super.onInit();
   }
@@ -138,11 +139,12 @@ class OrderController extends GetxController {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: jsonEncode({'id': newOrders[index]}));
+          body: jsonEncode({'orderId': newOrders[index].id}));
       if (response.statusCode == 200) {
         newOrders.removeAt(index);
         deleteReqState.value = RequestEnum.successes;
         update();
+        Get.back();
       } else {
         deleteReqState.value = RequestEnum.serverError;
       }
@@ -169,6 +171,7 @@ class OrderController extends GetxController {
                 .id,
           }));
       if (response.statusCode == 200) {
+        newOrders[orderIndex].workerName = workerName;
         acceptedOrders.add(newOrders[orderIndex]);
         newOrders.removeAt(orderIndex);
         acceptOrderState.value = RequestEnum.successes;
@@ -180,6 +183,15 @@ class OrderController extends GetxController {
     } catch (e) {
       debugPrint('** $e');
       acceptOrderState.value = RequestEnum.serverError;
+    }
+  }
+
+  void searchOrders() {
+    if (isAccepted.value) {
+    } else {
+      searchedOrders = newOrders
+          .where((order) => order.id.toString() == searchValue.text)
+          .toList();
     }
   }
 }

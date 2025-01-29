@@ -29,7 +29,7 @@ class OrdersPage extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 50.h),
               child: SearchCard(
-                controller: controller.searchCommande,
+                controller: controller.searchValue,
                 validator: (value) => appValidator(value: value.toString()),
                 reqState: controller.reqState,
                 names: controller.names,

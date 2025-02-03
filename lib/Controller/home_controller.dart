@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:market_admin_app/Model/Enums/user_type_enum.dart';
 import 'package:market_admin_app/View/Categories%20Page/categories_page.dart';
 import 'package:market_admin_app/View/Oders%20Page/orders_page.dart';
 import 'package:market_admin_app/View/Products%20Page/products_page.dart';

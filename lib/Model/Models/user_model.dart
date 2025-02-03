@@ -1,4 +1,3 @@
-import 'package:market_admin_app/Model/Models/product_model.dart';
 
 class UserModel {
   final int? id;

@@ -42,6 +42,7 @@ class AddNewUserForm extends StatelessWidget {
                     color: AppColor.greencolor,
                   ),
                   textController: controller.userPhoneNumber,
+                  keyboardType: TextInputType.number,
                   validator: (txt) => appValidator(
                         value: txt.toString(),
                         minLength: 0,
@@ -55,6 +56,7 @@ class AddNewUserForm extends StatelessWidget {
                     color: AppColor.greencolor,
                   ),
                   textController: controller.userEmail,
+                  keyboardType: TextInputType.emailAddress,
                   validator: (txt) => appValidator(
                         value: txt.toString(),
                         isRequired: true,

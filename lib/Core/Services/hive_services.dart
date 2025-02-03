@@ -15,19 +15,19 @@ class HiveServices {
   }
 
   static saveUserData({required String token}) async {
-    final userBox = await Hive.openBox('user_data');
+    final userBox = await Hive.openBox('user_box');
     await userBox.put('user_data', token);
     userBox.close();
   }
 
   static Future<String> getUserData() async {
-    final userBox = await Hive.openBox('user_data');
+    final userBox = await Hive.openBox('user_box');
     final userData = userBox.get('user_data');
     userBox.close();
     return userData;
   }
   static clearUserData() async {
-    final userBox = await Hive.openBox('user_data');
+    final userBox = await Hive.openBox('user_box');
     await userBox.clear();
     userBox.close();
   }

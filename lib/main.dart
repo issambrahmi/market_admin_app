@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
-import 'package:market_admin_app/View/Home%20Page/home_page.dart';
-import 'package:market_admin_app/View/LoginPage/login_page.dart';
 import 'package:market_admin_app/View/splash_screen.dart';
 
 String token = '';

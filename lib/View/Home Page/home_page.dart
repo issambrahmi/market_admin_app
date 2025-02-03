@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:http/http.dart';
 import 'package:market_admin_app/Controller/home_controller.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
 import 'package:market_admin_app/Core/Services/hive_services.dart';

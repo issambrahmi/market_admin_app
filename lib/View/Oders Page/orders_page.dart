@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:market_admin_app/Controller/order_controller.dart';
-import 'package:market_admin_app/Core/Shared%20Widgets/app_top_section.dart';
 import 'package:market_admin_app/Core/Shared%20Widgets/search_card.dart';
 import 'package:market_admin_app/Core/functions/app_validator.dart';
 import 'package:market_admin_app/View/Oders%20Page/commonW/orders_list.dart';
@@ -21,7 +20,15 @@ class OrdersPage extends StatelessWidget {
           children: [
             Column(
               children: [
-                const TopBarOrderPage(),
+                TopBarOrderPage(
+                  onBackTap: () {
+                    if (controller.isSearched.value == true) {
+                      controller.isSearched.value = false;
+                    } else {
+                      Get.back();
+                    }
+                  },
+                ),
                 SizedBox(height: 80.h),
                 const OrdersList(),
               ],
@@ -33,8 +40,10 @@ class OrdersPage extends StatelessWidget {
                 validator: (value) => appValidator(value: value.toString()),
                 reqState: controller.reqState,
                 names: controller.names,
-                isNmaesShow: controller.isNameShow,
+                isNmaesShow: false.obs,
+                onSearch: (value) => controller.searchOrders(),
                 onTap: (index) {},
+                showNames: false,
               ),
             )
           ],

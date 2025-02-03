@@ -37,7 +37,7 @@ class AppLinks {
   static const String editOrderItems = '$adminLink/orders/items';
   static const String acceptOrder = '$adminLink/orders';
   static const String deleteOrder = '$adminLink/orders';
-  static const String searchOrder = '$adminLink/orders/categorie/search';
+  static const String searchOrder = '$adminLink/orders/search';
   static const String getOrders = '$adminLink/orders';
   static const String getOrderItems = '$adminLink/orders/items';
 }

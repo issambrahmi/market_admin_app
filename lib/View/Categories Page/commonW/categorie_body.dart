@@ -65,7 +65,7 @@ class CategorieBody extends StatelessWidget {
                                               text:
                                                   'Are you sure yo want to delete this categorie',
                                               onTap: () {
-                                                controller.deleteProduct(index);
+                                                controller.deleteCategorie(index);
                                                 Get.back();
                                               }),
                                           child: Container(

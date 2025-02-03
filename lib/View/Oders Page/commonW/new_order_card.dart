@@ -12,10 +12,12 @@ import 'package:market_admin_app/View/Oders%20Page/commonW/tracking_order.dart';
 import 'package:market_admin_app/View/Oders%20Page/orders_detailes_page.dart';
 
 class NewOrderCard extends StatelessWidget {
-  const NewOrderCard({super.key, required this.order, required this.index});
+  const NewOrderCard(
+      {super.key, required this.order, required this.index, this.isSearched});
 
   final OrderModel order;
   final int index;
+  final bool? isSearched;
   @override
   Widget build(BuildContext context) {
     OrderController controller = Get.find<OrderController>();
@@ -183,7 +185,7 @@ class NewOrderCard extends StatelessWidget {
               if (value == 'details') {
                 controller.orderIndex = index;
                 Get.to(() => const OrdersDetailesPage());
-                controller.getOrderItems(order.id, index);
+                controller.getOrderItems(order.id, index, isSearched ?? false);
               }
               if (value == 'delete') {
                 appAlertDialogue(

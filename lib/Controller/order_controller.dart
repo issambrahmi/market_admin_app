@@ -16,6 +16,7 @@ class OrderController extends GetxController {
   List<OrderModel> searchedOrders = [];
   List<UserModel> workers = [];
   List names = [];
+  OrderModel? searchedOrder;
   int orderIndex = 0;
   String workerName = '';
 
@@ -30,11 +31,26 @@ class OrderController extends GetxController {
       RequestEnum.start.obs; // loading for accept order
   RxBool isNameShow = false.obs;
   RxBool isAccepted = false.obs;
+  RxBool isSearched = false.obs;
+  bool isMaxAcceptedOrders = false;
+  bool isMaxNewOrders = false;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
     searchValue = TextEditingController();
     getOrders();
+    //////////////////////////
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
+        if ((isAccepted.value && !isMaxAcceptedOrders) ||
+            (!isAccepted.value && !isMaxNewOrders)) {
+          loadMoreOrders();
+        }
+      }
+    });
+    ////////////////////////
     super.onInit();
   }
 
@@ -75,9 +91,10 @@ class OrderController extends GetxController {
     }
   }
 
-  void getOrderItems(int? orderId, int index) async {
-    if ((isAccepted.value && acceptedOrders[index].orderItems.isNotEmpty) ||
-        (!isAccepted.value && newOrders[index].orderItems.isNotEmpty)) {
+  void getOrderItems(int? orderId, int index, bool isSearch) async {
+    if (!isSearch &&
+        ((isAccepted.value && acceptedOrders[index].orderItems.isNotEmpty) ||
+            (!isAccepted.value && newOrders[index].orderItems.isNotEmpty))) {
       orderDetaillesState.value = RequestEnum.successes;
       return;
     }
@@ -90,7 +107,9 @@ class OrderController extends GetxController {
         for (var orderItem in data) {
           final ProductModel product = ProductModel.fromMap(orderItem);
           orderItem['product'] = product;
-          if (isAccepted.value) {
+          if (isSearch) {
+            searchedOrder!.orderItems.add(OrderItem.fromMap(orderItem));
+          } else if (isAccepted.value) {
             acceptedOrders[index].orderItems.add(OrderItem.fromMap(orderItem));
           } else {
             newOrders[index].orderItems.add(OrderItem.fromMap(orderItem));
@@ -119,6 +138,13 @@ class OrderController extends GetxController {
             newOrders.add(OrderModel.fromMap(order));
           }
         }
+        //test max orders
+        if (acceptedOrders.length < 30) {
+          isMaxAcceptedOrders = true;
+        }
+        if (newOrders.length < 30) {
+          isMaxNewOrders = true;
+        }
         reqState.value = RequestEnum.successes;
       } else {
         reqState.value = RequestEnum.serverError;
@@ -126,6 +152,33 @@ class OrderController extends GetxController {
     } catch (e) {
       debugPrint('** $e');
       reqState.value = RequestEnum.serverError;
+    }
+  }
+
+  void loadMoreOrders() async {
+    try {
+      final response = await http.get(Uri.parse(
+        isAccepted.value
+            ? "${AppLinks.getOrders}/1/${acceptedOrders.length}"
+            : "${AppLinks.getOrders}/0/${newOrders.length}",
+      ));
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body)['orders'];
+        if (data.length < 30) {
+          isAccepted.value ? isMaxAcceptedOrders = true : isMaxNewOrders = true;
+        }
+        if (isAccepted.value) {
+          for (var order in data) {
+            acceptedOrders.add(OrderModel.fromMap(order));
+          }
+        } else {
+          for (var order in data) {
+            acceptedOrders.add(OrderModel.fromMap(order));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('** $e');
     }
   }
 
@@ -171,9 +224,14 @@ class OrderController extends GetxController {
                 .id,
           }));
       if (response.statusCode == 200) {
-        newOrders[orderIndex].workerName = workerName;
-        acceptedOrders.add(newOrders[orderIndex]);
-        newOrders.removeAt(orderIndex);
+        if (isSearched.value == false) {
+          newOrders[orderIndex].workerName = workerName;
+          acceptedOrders.add(newOrders[orderIndex]);
+          newOrders.removeAt(orderIndex);
+        } else {
+          acceptedOrders.add(searchedOrder as OrderModel);
+          newOrders.removeWhere((order) => order.id == searchedOrder!.id);
+        }
         acceptOrderState.value = RequestEnum.successes;
         update();
         Get.back();
@@ -186,12 +244,27 @@ class OrderController extends GetxController {
     }
   }
 
-  void searchOrders() {
-    if (isAccepted.value) {
-    } else {
-      searchedOrders = newOrders
-          .where((order) => order.id.toString() == searchValue.text)
-          .toList();
+  void searchOrders() async {
+    searchedOrder = null;
+    reqState.value = RequestEnum.waiting;
+    try {
+      final response = await http.get(
+          Uri.parse("${AppLinks.searchOrder}/1/${searchValue.text.trim()}"));
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body)['orders'];
+        if (data.isNotEmpty) {
+          searchedOrder = OrderModel.fromMap(data[0]);
+        }
+        isSearched.value = true;
+        reqState.value = RequestEnum.successes;
+        update();
+      } else {
+        reqState.value = RequestEnum.serverError;
+      }
+    } catch (e) {
+      debugPrint('** $e');
+      reqState.value = RequestEnum.serverError;
     }
   }
 }

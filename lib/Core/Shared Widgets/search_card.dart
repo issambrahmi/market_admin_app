@@ -13,6 +13,8 @@ class SearchCard extends StatelessWidget {
       required this.reqState,
       required this.names,
       required this.isNmaesShow,
+      this.onSearch,
+      this.showNames,
       required this.onTap});
 
   final TextEditingController controller;
@@ -21,6 +23,9 @@ class SearchCard extends StatelessWidget {
   final List names;
   final RxBool isNmaesShow;
   final void Function(int? index) onTap;
+  final void Function(String)? onSearch;
+
+  final bool? showNames;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,11 @@ class SearchCard extends StatelessWidget {
             textController: controller,
             validator: validator,
             enableBorder: false,
+            onSearch: onSearch,
             onChanged: (value) {
-              isNmaesShow.value = value.trim().isNotEmpty;
+              if (showNames != false) {
+                isNmaesShow.value = value.trim().isNotEmpty;
+              }
             },
           ),
           Obx(() {

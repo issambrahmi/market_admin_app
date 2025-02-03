@@ -3,74 +3,94 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
 
 class TrackingOrder extends StatelessWidget {
-  const TrackingOrder({super.key});
+  const TrackingOrder({super.key, required this.status});
 
+  final String status;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundColor: AppColor.greencolor,
-                maxRadius: 11.sp,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // waiting
+            CircleAvatar(
+              backgroundColor: status == 'waiting' ||
+                      status == 'preparing' ||
+                      status == 'finished'
+                  ? AppColor.greencolor
+                  : AppColor.mainScreencolor,
+              maxRadius: 11.sp,
+            ),
+            Container(
+              height: 5.h,
+              width: 50.w,
+              decoration: BoxDecoration(
+                color: status == 'preparing' || status == 'finished'
+                    ? AppColor.greencolor
+                    : AppColor.mainScreencolor,
               ),
-              Container(
-                height: 5.h,
-                width: 50.w,
-                decoration: BoxDecoration(
-                  //color: AppColor.mainScreencolor,
-                  color: AppColor.greencolor,
-                ),
+            ),
+            // preparing
+            CircleAvatar(
+              backgroundColor: status == 'preparing' || status == 'finished'
+                  ? AppColor.greencolor
+                  : AppColor.mainScreencolor,
+              maxRadius: 11.sp,
+            ),
+            Container(
+              height: 5.h,
+              width: 50.w,
+              decoration: BoxDecoration(
+                color: status == 'finished'
+                    ? AppColor.greencolor
+                    : AppColor.mainScreencolor,
               ),
-              CircleAvatar(
-                backgroundColor: AppColor.greencolor,
-                maxRadius: 11.sp,
+            ),
+            // finished
+            CircleAvatar(
+              backgroundColor: status == 'finished'
+                  ? AppColor.greencolor
+                  : AppColor.mainScreencolor,
+              maxRadius: 11.sp,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Waiting',
+              style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color:
+                    status == 'waiting' ? Colors.black : Colors.grey.shade600,
               ),
-              Container(
-                height: 5.h,
-                width: 50.w,
-                decoration: const BoxDecoration(
-                  color: AppColor.mainScreencolor,
-                ),
+            ),
+            SizedBox(width: 20.w),
+            Text(
+              'preparing',
+              style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color:
+                    status == 'preparing' ? Colors.black : Colors.grey.shade600,
               ),
-              CircleAvatar(
-                backgroundColor: AppColor.mainScreencolor,
-                maxRadius: 11.sp,
+            ),
+            SizedBox(width: 20.w),
+            Text(
+              'finish',
+              style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color:
+                    status == 'finished' ? Colors.black : Colors.grey.shade600,
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Waiting',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              SizedBox(width: 20.w),
-              Text(
-                'preparing',
-                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(width: 20.w),
-              Text(
-                'finish',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

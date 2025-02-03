@@ -45,7 +45,7 @@ void addNewCategorie(BuildContext context) {
                   textSize: 14.sp,
                   color: AppColor.greencolor,
                   onTap: () {
-                    controller.addProduct(context);
+                    controller.addCategorie(context);
                   },
                 ),
               ],

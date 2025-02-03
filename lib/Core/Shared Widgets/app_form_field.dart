@@ -14,7 +14,8 @@ class AppFormField extends StatelessWidget {
       this.eyeTap,
       this.isObsecure,
       this.onChanged,
-      this.enableBorder});
+      this.enableBorder,
+      this.onSearch});
   final String hint;
   final TextInputType? keyboardType;
   final Widget prefixIcon;
@@ -24,6 +25,8 @@ class AppFormField extends StatelessWidget {
   final bool? isObsecure;
   final void Function()? eyeTap;
   final void Function(String)? onChanged;
+  final void Function(String)? onSearch;
+
   final bool? enableBorder;
 
   @override
@@ -34,6 +37,7 @@ class AppFormField extends StatelessWidget {
       child: TextFormField(
         cursorColor: AppColor.greencolor,
         controller: textController,
+        onFieldSubmitted: onSearch,
         validator: validator,
         onChanged: onChanged,
         obscureText: isObsecure ?? false,

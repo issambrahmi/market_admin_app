@@ -1,13 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:market_admin_app/Core/Constants/app_links.dart';
-import 'package:market_admin_app/Core/Shared%20Widgets/app_alert_dialogue.dart';
 import 'package:market_admin_app/Model/Enums/request_enum.dart';
 import 'package:market_admin_app/Model/Models/categorie_model.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +44,7 @@ class CategorieController extends GetxController {
     }
   }
 
-  void deleteProduct(int index) async {
+  void deleteCategorie(int index) async {
     deleteReqState.value = RequestEnum.waiting;
     try {
       final response = await http.delete(
@@ -76,7 +70,7 @@ class CategorieController extends GetxController {
     }
   }
 
-  void addProduct(BuildContext context) async {
+  void addCategorie(BuildContext context) async {
     addReqState.value = RequestEnum.waiting;
     if (key.currentState!.validate()) {
       try {

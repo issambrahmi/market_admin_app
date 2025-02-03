@@ -5,8 +5,9 @@ import 'package:market_admin_app/Controller/order_controller.dart';
 import 'package:market_admin_app/Core/Constants/app_color.dart';
 
 class TopBarOrderPage extends StatelessWidget {
-  const TopBarOrderPage({super.key});
+  const TopBarOrderPage({super.key, required this.onBackTap});
 
+  final void Function() onBackTap;
   @override
   Widget build(BuildContext context) {
     OrderController controller = Get.find<OrderController>();
@@ -25,7 +26,7 @@ class TopBarOrderPage extends StatelessWidget {
               child: Stack(
                 children: [
                   IconButton(
-                      onPressed: () => Get.back(),
+                      onPressed: onBackTap,
                       style: IconButton.styleFrom(
                         backgroundColor: AppColor.mainScreencolor,
                       ),

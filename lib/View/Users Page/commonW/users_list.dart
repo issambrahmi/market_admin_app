@@ -36,8 +36,8 @@ class UsersList extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return index == controller.users.length &&
-                                            !controller.isMaxUers &&
-                                            !controller.isSearchNmaesShow.value
+                                            !controller.isMaxUers
+                                        //&&!controller.isSearchNmaesShow.value
                                         ? const Center(
                                             child: CircularProgressIndicator(),
                                           )
